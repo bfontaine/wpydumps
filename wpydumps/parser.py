@@ -141,4 +141,5 @@ def parse_pages_from_archive_filename(filename, page_callback, **kwargs):
     """
     Parse pages from a .7z archive file. See ``parse_pages_from_reader``.
     """
-    return parse_pages_from_reader(Wp7zReader(filename))
+    return parse_pages_from_reader(Wp7zReader(filename), page_callback,
+            **kwargs)
