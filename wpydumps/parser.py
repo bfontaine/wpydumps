@@ -29,6 +29,8 @@ class PageHandler(sax.handler.ContentHandler):
         self._current_revision = None
         self._current_contributor = None
 
+        self._previous_revision_text_length = None
+
     def _printState(self):
         print(list(self._elements))
 
@@ -45,6 +47,7 @@ class PageHandler(sax.handler.ContentHandler):
 
         if name == "page":
             self._current_page = Page()
+            self._previous_revision_text_length = 0
             return
 
         parent = self.parentElement()
@@ -91,13 +94,20 @@ class PageHandler(sax.handler.ContentHandler):
             if element == "timestamp":
                 revision.timestamp = content
             elif element == "comment":
-                revision.comment = content
+                if revision.comment is None:
+                    revision.comment = ""
+                revision.comment += content
             elif element == "text":
                 if self._keep_revisions_text:
-                    revision.text = content
-                # TODO is that the length of the whole article? If so, do a
-                # diff with the previous one
-                revision.text_length = len(content)
+                    if revision.text is None:
+                        revision.text = ""
+                    revision.text += content
+
+                if revision.text_length is None:
+                    revision.text_length = 0
+
+                revision.text_length += len(content)
+
             elif element == "id":
                 revision.id = content
             elif element == "parentid":
@@ -121,12 +131,23 @@ class PageHandler(sax.handler.ContentHandler):
             self._current_page = None
 
         elif name == "revision":
-            self._current_page.revisions.append(self._current_revision)
+            revision = self._current_revision
+            if revision.text_length is None:
+                revision.text_length = 0
+
+            revision.diff_length = revision.text_length - \
+                self._previous_revision_text_length
+            self._previous_revision_text_length = revision.text_length
+
+            self._current_page.revisions.append(revision)
             self._current_revision = None
 
         elif name == "contributor":
             self._current_revision.contributor = self._current_contributor
             self._current_contributor = None
+
+        elif self.currentElement() == "revision":
+            revision = self._current_revision
 
 
 def parse_pages_from_reader(reader, page_callback, **kwargs):

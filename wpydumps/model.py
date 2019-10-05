@@ -24,7 +24,8 @@ class Revision:
         self.contributor = None
         self.comment = None
         self.text = None
-        self.text_length = -1
+        self.text_length = None
+        self.diff_length = None
         self.minor = False
         self.deleted_text = False
         self.deleted_contributor = False
