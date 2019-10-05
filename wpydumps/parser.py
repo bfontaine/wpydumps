@@ -112,6 +112,12 @@ class PageHandler(sax.handler.ContentHandler):
                 revision.id = content
             elif element == "parentid":
                 revision.parent_id = content
+            elif element == "model":
+                revision.model = content
+            elif element == "format":
+                revision.format = content
+            elif element == "sha1":
+                revision.sha1 = content
 
         elif parent == "contributor":
             contributor = self._current_contributor
