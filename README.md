@@ -7,6 +7,8 @@ uncompressing them on-disk.
 
 Only the “All pages with complete edit history” dump is supported.
 
+This is quite experimental for now.
+
 [dumps]: https://dumps.wikimedia.org
 
 ## Usage
@@ -33,7 +35,8 @@ with open("myfile") as f:
 ```
 
 The text of each revision is dropped by default. You can disable this behavior
-by passing `keep_revisions_text=True` to the parser function.
+by passing `keep_revisions_text=True` to the parser function. Revisions always
+have a `text_length` and `diff_length` `int` attributes.
 
 [SAX]: https://docs.python.org/3.6/library/xml.sax.html
 
