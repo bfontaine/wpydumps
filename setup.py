@@ -2,12 +2,23 @@
 
 from setuptools import setup
 
+# http://stackoverflow.com/a/7071358/735926
+import re
+VERSIONFILE='wpydumps/__init__.py'
+verstrline = open(VERSIONFILE, 'rt').read()
+VSRE = r'^__version__\s+=\s+[\'"]([^\'"]+)[\'"]'
+mo = re.search(VSRE, verstrline, re.M)
+if mo:
+    verstr = mo.group(1)
+else:
+    raise RuntimeError("Unable to find version string in %s." % VERSIONFILE)
+
 setup(
     name='wpydumps',
-    version='0.0.1',
+    version=verstr,
     author='Baptiste Fontaine',
     author_email='b@ptistefontaine.fr',
-    py_modules=['wpydumps'],
+    packages=['wpydumps'],
     url='https://github.com/bfontaine/wpydumps',
     license='MIT License',
     description='Work with Wikipedia dumps',
