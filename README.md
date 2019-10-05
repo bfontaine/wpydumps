@@ -38,15 +38,28 @@ by passing `keep_revisions_text=True` to the parser function.
 [SAX]: https://docs.python.org/3.6/library/xml.sax.html
 
 ### Examples
-#### Print all pages and their number of revisions
 ```python3
 from wpydumps.parser import parse_pages_from_archive_filename
 
-def next_page(page):
-    print(page.title, len(page.revisions))
+def page_callback(page):
+    pass # do something with the page
 
 # use the appropriate filename
 parse_pages_from_archive_filename(
     "frwiki-20190901-pages-meta-history1.xml-p3p1630.7z",
-    next_page)
+    page_callback)
+```
+#### Print all pages and their number of revisions
+```python3
+def page_callback(page):
+    print(page.title, len(page.revisions))
+```
+#### Print all pages and their number of contributors
+```python3
+def page_callback(page):
+    contributors = set()
+    for rev in page.revisions:
+        contributors.add(rev.contributor.username or rev.contributor.ip)
+
+    print("%s: %d contributors" % (page.title, len(contributors)))
 ```
