@@ -68,7 +68,6 @@ class PageHandler(sax.handler.ContentHandler):
             elif name == "text" and "deleted" in attrs:
                 self._current_revision.deleted_text = True
 
-
     def characters(self, content):
         if content.isspace():
             return
@@ -163,6 +162,7 @@ def parse_pages_from_reader(reader, page_callback, **kwargs):
     """
     handler = PageHandler(page_callback, **kwargs)
     sax.parse(reader, handler)
+
 
 def parse_pages_from_archive_filename(filename, page_callback, **kwargs):
     """

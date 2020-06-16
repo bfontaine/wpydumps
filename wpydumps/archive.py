@@ -3,6 +3,7 @@
 import io
 import libarchive.public
 
+
 class Wp7zReader(io.RawIOBase):
     """
     File-like reader that can read 7z archives. It extract each entry of the

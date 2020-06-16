@@ -1,8 +1,10 @@
 # -*- coding: UTF-8 -*-
 
+
 def _repr(obj, attrs_string):
     name = "%s.%s" % (obj.__class__.__module__, obj.__class__.__name__)
     return '<%s %s>' % (name, attrs_string)
+
 
 class Contributor:
     def __init__(self):
