@@ -11,6 +11,10 @@ This is quite experimental for now.
 
 [dumps]: https://dumps.wikimedia.org
 
+## Install
+
+    pip install wpydumps
+
 ## Usage
 The parser uses [SAX][] to read the files as a stream. It takes a reader or a
 filename and a page callback function. It parses the file and call that
