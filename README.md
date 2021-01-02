@@ -27,7 +27,7 @@ details as well as their revisions (`wpydumps.model.Revision`). Each revision
 holds a reference to its contributor (`wpydumps.model.Contributor`).
 
 ```python3
-import wpydumps.parser as p
+import wpydumps as p
 
 def simple_page_callback(page):
     print(page.title)
@@ -48,7 +48,7 @@ have a `text_length` and `diff_length` `int` attributes.
 
 ### Examples
 ```python3
-from wpydumps.parser import parse_pages_from_archive_filename
+from wpydumps import parse_pages_from_archive_filename
 
 def page_callback(page):
     pass # do something with the page
