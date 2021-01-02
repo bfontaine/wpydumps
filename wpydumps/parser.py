@@ -73,11 +73,16 @@ class PageHandler(sax.handler.ContentHandler):
                 self._current_revision.deleted_text = True
 
     def characters(self, content):
-        if content.isspace():
-            return
-
         parent = self.parentElement()
         element = self.currentElement()
+        revision = self._current_revision
+
+        if content.isspace():
+            if parent == "revision" and element == "text" and self._keep_revisions_text:
+                if revision.text is None:
+                    revision.text = ""
+                revision.text += content
+            return
 
         if parent == "page":
             page = self._current_page
@@ -92,7 +97,6 @@ class PageHandler(sax.handler.ContentHandler):
                 page.title = content
 
         elif parent == "revision":
-            revision = self._current_revision
 
             if element == "timestamp":
                 revision.timestamp = content
