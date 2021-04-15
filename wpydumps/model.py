@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+from typing import Optional, Iterable
 
 
 def _repr(obj, attrs_string):
@@ -9,8 +10,8 @@ def _repr(obj, attrs_string):
 class Contributor:
     def __init__(self):
         self.id = None
-        self.username = None
-        self.ip = None
+        self.username: Optional[str] = None
+        self.ip: Optional[str] = None
 
     def __repr__(self):
         if self.ip:
@@ -23,17 +24,17 @@ class Revision:
         self.id = None
         self.parent_id = None
         self.timestamp = None
-        self.contributor = None
-        self.comment = None
-        self.text = None
-        self.text_length = None
-        self.diff_length = None
-        self.minor = False
-        self.deleted_text = False
-        self.deleted_contributor = False
+        self.contributor: Optional[Contributor] = None
+        self.comment: Optional[str] = None
+        self.text: Optional[str] = None
+        self.text_length: Optional[int] = None
+        self.diff_length: Optional[int] = None
+        self.minor: Optional[bool] = False
+        self.deleted_text: Optional[bool] = False
+        self.deleted_contributor: Optional[bool] = False
         self.model = None
         self.format = None
-        self.sha1 = None
+        self.sha1: Optional[str] = None
 
     def __repr__(self):
         return _repr(self, 'id=%s m=%s' % (self.id, self.minor))
@@ -41,12 +42,12 @@ class Revision:
 
 class Page:
     def __init__(self):
-        self.title = None
+        self.title: Optional[str] = None
         self.namespace = None
         self.id = None
-        self.redirect = None
+        self.redirect: Optional[str] = None
         self.restrictions = None
-        self.revisions = []
+        self.revisions: Iterable[Revision] = []
 
     def __repr__(self):
         return _repr(self, 'title="%s"' % self.title)
