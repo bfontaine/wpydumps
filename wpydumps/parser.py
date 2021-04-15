@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 from collections import deque
-from typing import Callable, Optional, Any, Deque
+from typing import Callable, Optional, Any, Deque, cast
 from xml import sax
 
 from wpydumps.model import Page, Revision, Contributor
@@ -58,24 +58,30 @@ class PageHandler(sax.handler.ContentHandler):
         if parent == "page":
             if name == "redirect":
                 self._current_page.redirect = attrs["title"]
+                return
             elif name == "revision":
                 self._current_revision = Revision()
+                return
 
-        elif parent == "revision":
+        if parent == "revision":
             if name == "minor":
                 self._current_revision.minor = True
+                return
             elif name == "contributor":
                 if "deleted" in attrs:
                     self._current_revision.deleted_contributor = True
+                    return
                 else:
                     self._current_contributor = Contributor()
+                    return
             elif name == "text" and "deleted" in attrs:
                 self._current_revision.deleted_text = True
+                return
 
-    def characters(self, content):
+    def characters(self, content: str):
         parent = self.parentElement()
         element = self.currentElement()
-        revision = self._current_revision
+        revision = cast(Revision, self._current_revision)
 
         if content.isspace():
             if parent == "revision" and element == "text" and self._keep_revisions_text:
@@ -84,20 +90,25 @@ class PageHandler(sax.handler.ContentHandler):
                 revision.text += content
             return
 
+        if parent in {"siteinfo", "namespaces"}:
+            return
+
         if parent == "page":
-            page = self._current_page
+            page = cast(Page, self._current_page)
 
             if element == "ns":
                 page.namespace = content
             elif element == "id":
                 page.id = content
             elif element == "restrictions":
+                print(content)
                 page.restrictions = content
             elif element == "title":
                 page.title = content
 
-        elif parent == "revision":
+            return
 
+        if parent == "revision":
             if element == "timestamp":
                 revision.timestamp = content
             elif element == "comment":
@@ -114,7 +125,6 @@ class PageHandler(sax.handler.ContentHandler):
                     revision.text_length = 0
 
                 revision.text_length += len(content)
-
             elif element == "id":
                 revision.id = content
             elif element == "parentid":
@@ -126,8 +136,10 @@ class PageHandler(sax.handler.ContentHandler):
             elif element == "sha1":
                 revision.sha1 = content
 
-        elif parent == "contributor":
-            contributor = self._current_contributor
+            return
+
+        if parent == "contributor":
+            contributor = cast(Contributor, self._current_contributor)
 
             if element == "id":
                 contributor.id = content
@@ -135,6 +147,9 @@ class PageHandler(sax.handler.ContentHandler):
                 contributor.username = content
             elif element == "ip":
                 contributor.ip = content
+
+            return
+
 
     def endElement(self, name):
         self._elements.pop()

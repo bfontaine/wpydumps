@@ -9,7 +9,7 @@ def _repr(obj, attrs_string):
 
 class Contributor:
     def __init__(self):
-        self.id = None
+        self.id: Optional[str] = None
         self.username: Optional[str] = None
         self.ip: Optional[str] = None
 
@@ -21,9 +21,9 @@ class Contributor:
 
 class Revision:
     def __init__(self):
-        self.id = None
-        self.parent_id = None
-        self.timestamp = None
+        self.id: Optional[str] = None
+        self.parent_id: Optional[str] = None
+        self.timestamp: Optional[str] = None  # e.g. "2010-12-22T15:34:44Z"
         self.contributor: Optional[Contributor] = None
         self.comment: Optional[str] = None
         self.text: Optional[str] = None
@@ -32,8 +32,8 @@ class Revision:
         self.minor: Optional[bool] = False
         self.deleted_text: Optional[bool] = False
         self.deleted_contributor: Optional[bool] = False
-        self.model = None
-        self.format = None
+        self.model: Optional[str] = None  # "wikitext", "javascript", "css"
+        self.format: Optional[str] = None  # "text/x-wiki", "text/javascript", "text/css"
         self.sha1: Optional[str] = None
 
     def __repr__(self):
@@ -43,10 +43,10 @@ class Revision:
 class Page:
     def __init__(self):
         self.title: Optional[str] = None
-        self.namespace = None
-        self.id = None
+        self.namespace: Optional[str] = None
+        self.id: Optional[str] = None
         self.redirect: Optional[str] = None
-        self.restrictions = None
+        self.restrictions: Optional[str] = None
         self.revisions: Iterable[Revision] = []
 
     def __repr__(self):
