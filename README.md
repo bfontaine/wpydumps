@@ -2,10 +2,10 @@
 
 **WPyDumps** is a Python module to work with [dumps of Wikipedia][dumps].
 
-It allows one to parse and extract relevant information from dump files without
-un-compressing them on-disk.
+It allows one to parse and extract relevant information from dump files without un-compressing them on-disk.
 
 It works with (at least) these dumps:
+
 - `pages-meta-history….xml-….7z` (“All pages with complete edit history”)
 - `pages-meta-current.xml.bz2`
 
@@ -18,19 +18,21 @@ This is quite experimental for now.
     pip install wpydumps
 
 ## Usage
-The parser uses [SAX][] to read the files as a stream. It takes a reader or a
-filename and a page callback function. It parses the file and call that
-function with each page.
 
-Pages are represented as `wpydumps.model.Page` objects. They include the pages’
-details as well as their revisions (`wpydumps.model.Revision`). Each revision
-holds a reference to its contributor (`wpydumps.model.Contributor`).
+The parser uses [SAX][] to read the files as a stream. It takes a reader or a filename and a page callback function. It
+parses the file and call that function with each page.
+
+Pages are represented as `wpydumps.model.Page` objects. They include the pages’ details as well as their
+revisions (`wpydumps.model.Revision`). Each revision holds a reference to its contributor (`wpydumps.model.Contributor`)
+.
 
 ```python3
 import wpydumps as p
 
+
 def simple_page_callback(page):
     print(page.title)
+
 
 # parse from a local archive
 p.parse_pages_from_archive_filename("myfile.7z", simple_page_callback)
@@ -40,30 +42,36 @@ with open("myfile") as f:
     p.parse_pages_from_reader(f, simple_page_callback)
 ```
 
-The text of each revision is dropped by default. You can disable this behavior
-by passing `keep_revisions_text=True` to the parser function. Revisions always
-have a `text_length` and `diff_length` `int` attributes.
+The text of each revision is dropped by default. You can disable this behavior by passing `keep_revisions_text=True` to
+the parser function. Revisions always have a `text_length` and `diff_length` `int` attributes.
 
 [SAX]: https://docs.python.org/3.6/library/xml.sax.html
 
 ### Examples
+
 ```python3
 from wpydumps import parse_pages_from_archive_filename
 
+
 def page_callback(page):
-    pass # do something with the page
+    pass  # do something with the page
+
 
 # use the appropriate filename
 parse_pages_from_archive_filename(
     "frwiki-20190901-pages-meta-history1.xml-p3p1630.7z",
     page_callback)
 ```
+
 #### Print all pages and their number of revisions
+
 ```python3
 def page_callback(page):
     print(page.title, len(page.revisions))
 ```
+
 #### Print all pages and their number of contributors
+
 ```python3
 def page_callback(page):
     contributors = set()

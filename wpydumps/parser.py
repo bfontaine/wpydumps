@@ -150,7 +150,6 @@ class PageHandler(sax.handler.ContentHandler):
 
             return
 
-
     def endElement(self, name):
         self._elements.pop()
 
