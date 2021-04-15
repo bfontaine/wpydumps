@@ -21,7 +21,7 @@ setup(
     packages=['wpydumps'],
     url='https://github.com/bfontaine/wpydumps',
     license='MIT License',
-    description='Work with Wikipedia dumps',
+    description='Read Wikipedia dumps',
     long_description=open('README.md', 'r', encoding='utf-8').read(),
     long_description_content_type='text/markdown',
     install_requires=[

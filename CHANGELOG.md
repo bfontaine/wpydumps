@@ -1,5 +1,7 @@
 # WPyDumps Changelog
 
+## 0.1.0 (2021/04/15)
+
 ## 0.0.3 (2021/01/02)
 
 * Fix missing spaces in revision texts

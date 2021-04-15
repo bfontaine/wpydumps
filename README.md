@@ -9,8 +9,6 @@ It works with (at least) these dumps:
 - `pages-meta-history….xml-….7z` (“All pages with complete edit history”)
 - `pages-meta-current.xml.bz2`
 
-This is quite experimental for now.
-
 [dumps]: https://dumps.wikimedia.org
 
 ## Install
