@@ -1,6 +1,12 @@
 # WPyDumps Changelog
 
+##
+
+* Set `keep_revisions_text` to `True` by default
+
 ## 0.1.0 (2021/04/15)
+
+* Add type hints everywhere
 
 ## 0.0.3 (2021/01/02)
 

@@ -17,13 +17,13 @@ class PageHandler(sax.handler.ContentHandler):
 
     Options:
 
-    * ``keep_revisions_text`` (default ``False``): keep the revision text. If
+    * ``keep_revisions_text`` (default ``True``): keep the revision text. If
       ``False``, drop it and set only `Revision.text_length`.
 
     Format: https://en.wikipedia.org/wiki/Help:Export.
     """
 
-    def __init__(self, page_callback: PageCallbackType, keep_revisions_text=False):
+    def __init__(self, page_callback: PageCallbackType, keep_revisions_text=True):
         super().__init__()
         self.page_callback = page_callback
         self._keep_revisions_text = keep_revisions_text
@@ -172,12 +172,9 @@ class PageHandler(sax.handler.ContentHandler):
             self._current_revision.contributor = self._current_contributor
             self._current_contributor = None
 
-        # elif self.currentElement() == "revision":
-        #     revision = self._current_revision
-
 
 def parse_pages_from_reader(reader, page_callback: PageCallbackType,
-                            keep_revisions_text=False):
+                            keep_revisions_text=True):
     """
     Parse pages from a file-like reader. Call ``page_callback`` on each parsed
     page. See ``PageHandler`` for the keyword arguments.
@@ -187,7 +184,7 @@ def parse_pages_from_reader(reader, page_callback: PageCallbackType,
 
 
 def parse_pages_from_archive_filename(filename: str, page_callback: PageCallbackType,
-                                      keep_revisions_text=False):
+                                      keep_revisions_text=True):
     """
     Parse pages from an archive file. See ``parse_pages_from_reader``.
     """

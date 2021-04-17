@@ -40,8 +40,8 @@ with open("myfile") as f:
     p.parse_pages_from_reader(f, simple_page_callback)
 ```
 
-The text of each revision is dropped by default. You can disable this behavior by passing `keep_revisions_text=True` to
-the parser function. Revisions always have a `text_length` and `diff_length` `int` attributes.
+Revisions always have a `text_length` and `diff_length` `int` attributes. You may drop the text content by
+passing `keep_revisions_text=False` to the parser.
 
 [SAX]: https://docs.python.org/3.6/library/xml.sax.html
 
@@ -56,9 +56,7 @@ def page_callback(page):
 
 
 # use the appropriate filename
-parse_pages_from_archive_filename(
-    "frwiki-20190901-pages-meta-history1.xml-p3p1630.7z",
-    page_callback)
+parse_pages_from_archive_filename("frwiki-20190901-pages-meta-history1.xml-p3p1630.7z", page_callback)
 ```
 
 #### Print all pages and their number of revisions
