@@ -1,0 +1,107 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.10/ http://www.mediawiki.org/xml/export-0.10.xsd" version="0.10" xml:lang="fr">
+  <siteinfo>
+    <sitename>Wikipédia</sitename>
+    <dbname>frwiki</dbname>
+    <base>https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal</base>
+    <generator>MediaWiki 1.36.0-wmf.36</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Média</namespace>
+      <namespace key="-1" case="first-letter">Spécial</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Discussion</namespace>
+      <namespace key="2302" case="case-sensitive">Définition de gadget</namespace>
+      <namespace key="2600" case="first-letter">Sujet</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Utilisateur:Allinde/Mise en forme</title>
+    <ns>2</ns>
+    <id>5174515</id>
+    <revision>
+      <id>60468049</id>
+      <timestamp>2010-12-22T15:34:44Z</timestamp>
+      <contributor>
+        <username>Allinde</username>
+        <id>944954</id>
+      </contributor>
+      <comment>Nouvelle page : {{:Utilisateur:Alasjourn/Onglets}} {{:Utilisateur:Alasjourn/Onglets outils}}</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text bytes="76" xml:space="preserve">{{:Utilisateur:Alasjourn/Onglets}}
+{{:Utilisateur:Alasjourn/Onglets outils}}</text>
+      <sha1>9tb4wffu44suq9qdmtrfbhd0q25x5eq</sha1>
+    </revision>
+    <revision>
+      <id>60468189</id>
+      <parentid>60468049</parentid>
+      <timestamp>2010-12-22T15:39:30Z</timestamp>
+      <contributor>
+        <username>Allinde</username>
+        <id>944954</id>
+      </contributor>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text bytes="3475" xml:space="preserve">{{:Utilisateur:Alasjourn/Onglets}}
+{{:Utilisateur:Alasjourn/Onglets outils}}
+Bla bla bla
+
+{{Boîte déroulante fin}}</text>
+      <sha1>bl336seupt9r09lpej2dxuqaig3phq4</sha1>
+    </revision>
+    <revision>
+      <id>60468229</id>
+      <parentid>60468189</parentid>
+      <timestamp>2010-12-22T15:40:45Z</timestamp>
+      <contributor>
+        <username>Allinde</username>
+        <id>944954</id>
+      </contributor>
+      <comment>/* Insérer des lignes de code */</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text bytes="3355" xml:space="preserve">{{:Utilisateur:Alasjourn/Onglets}}
+{{:Utilisateur:Alasjourn/Onglets outils}}
+{{Boîte déroulante fin}}</text>
+      <sha1>r2ryapwrkgpsg9ybztasese8sbjen3y</sha1>
+    </revision>
+    <revision>
+      <id>60468236</id>
+      <parentid>60468229</parentid>
+      <timestamp>2010-12-22T15:41:07Z</timestamp>
+      <contributor>
+        <username>Allinde</username>
+        <id>944954</id>
+      </contributor>
+      <comment>/* Boite déroulante */</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text bytes="3259" xml:space="preserve">{{:Utilisateur:Alasjourn/Onglets}}
+{{:Utilisateur:Alasjourn/Onglets outils}}
+==Insérer un tableau :==
+== Boite déroulante ==
+ &lt;nowiki&gt;{{Boîte déroulante début|titre=Titre de la boite}}Bla bla bla{{Boîte déroulante fin}}&lt;/nowiki&gt;</text>
+      <sha1>ikogn1u4305ader47je29rkprpvici8</sha1>
+    </revision>
+  </page>
+  <page>
+    <title>ANGOA</title>
+    <ns>0</ns>
+    <id>5174520</id>
+    <redirect title="Association des producteurs de cinéma" />
+    <revision>
+      <id>60468111</id>
+      <timestamp>2010-12-22T15:36:40Z</timestamp>
+      <contributor>
+        <username>-Nmd</username>
+        <id>217275</id>
+      </contributor>
+      <minor />
+      <comment>#REDIRECTION[[</comment>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text bytes="54" xml:space="preserve">#REDIRECTION[[Association des producteurs de cinéma]]</text>
+      <sha1>g7homo8chvxgyxvqjgoqf0tgh7jzh38</sha1>
+    </revision>
+  </page>
+</mediawiki>
