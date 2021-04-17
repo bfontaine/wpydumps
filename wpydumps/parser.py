@@ -32,6 +32,7 @@ class PageHandler(sax.handler.ContentHandler):
         self._current_page: Optional[Page] = None
         self._current_revision: Optional[Revision] = None
         self._current_contributor: Optional[Contributor] = None
+        self._current_content: Optional[str] = None
 
         self._previous_revision_text_length: Optional[int] = None
 
@@ -79,19 +80,49 @@ class PageHandler(sax.handler.ContentHandler):
                 return
 
     def characters(self, content: str):
+        if self._current_content is None:
+            self._current_content = content
+        else:
+            self._current_content += content
+
+    def endElement(self, name):
         parent = self.parentElement()
         element = self.currentElement()
-        revision = cast(Revision, self._current_revision)
+        revision = self._current_revision
+        self._elements.pop()
 
-        if content.isspace():
-            if parent == "revision" and element == "text" and self._keep_revisions_text:
-                if revision.text is None:
-                    revision.text = ""
-                revision.text += content
+        content = self._current_content
+        self._current_content = None
+
+        if name == "page":
+            self.page_callback(self._current_page)
+            self._current_page = None
             return
 
-        if parent in {"siteinfo", "namespaces"}:
+        if name == "revision":
+            revision = self._current_revision
+            if revision.text_length is None:
+                revision.text_length = 0
+
+            revision.diff_length = revision.text_length - self._previous_revision_text_length
+            self._previous_revision_text_length = revision.text_length
+
+            self._current_page.revisions.append(revision)
+            self._current_revision = None
             return
+
+        if name == "contributor":
+            self._current_revision.contributor = self._current_contributor
+            self._current_contributor = None
+            return
+
+        # text fields
+
+        if content is None:
+            return
+
+        original_content = content
+        content = content.strip()
 
         if parent == "page":
             page = cast(Page, self._current_page)
@@ -101,7 +132,6 @@ class PageHandler(sax.handler.ContentHandler):
             elif element == "id":
                 page.id = content
             elif element == "restrictions":
-                print(content)
                 page.restrictions = content
             elif element == "title":
                 page.title = content
@@ -109,22 +139,17 @@ class PageHandler(sax.handler.ContentHandler):
             return
 
         if parent == "revision":
-            if element == "timestamp":
-                revision.timestamp = content
-            elif element == "comment":
-                if revision.comment is None:
-                    revision.comment = ""
-                revision.comment += content
-            elif element == "text":
+            if element == "text":
                 if self._keep_revisions_text:
-                    if revision.text is None:
-                        revision.text = ""
-                    revision.text += content
-
-                if revision.text_length is None:
+                    revision.text = original_content
+                    revision.text_length = len(original_content)
+                else:
                     revision.text_length = 0
 
-                revision.text_length += len(content)
+            elif element == "timestamp":
+                revision.timestamp = content
+            elif element == "comment":
+                revision.comment = content
             elif element == "id":
                 revision.id = content
             elif element == "parentid":
@@ -149,28 +174,6 @@ class PageHandler(sax.handler.ContentHandler):
                 contributor.ip = content
 
             return
-
-    def endElement(self, name):
-        self._elements.pop()
-
-        if name == "page":
-            self.page_callback(self._current_page)
-            self._current_page = None
-
-        elif name == "revision":
-            revision = self._current_revision
-            if revision.text_length is None:
-                revision.text_length = 0
-
-            revision.diff_length = revision.text_length - self._previous_revision_text_length
-            self._previous_revision_text_length = revision.text_length
-
-            self._current_page.revisions.append(revision)
-            self._current_revision = None
-
-        elif name == "contributor":
-            self._current_revision.contributor = self._current_contributor
-            self._current_contributor = None
 
 
 def parse_pages_from_reader(reader, page_callback: PageCallbackType,
