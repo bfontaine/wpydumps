@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-from typing import Optional, Iterable
+from typing import Optional, List
 
 
 def _repr(obj, attrs_string):
@@ -47,7 +47,7 @@ class Page:
         self.id: Optional[str] = None
         self.redirect: Optional[str] = None
         self.restrictions: Optional[str] = None
-        self.revisions: Iterable[Revision] = []
+        self.revisions: List[Revision] = []
 
     def __repr__(self):
         return _repr(self, 'title="%s"' % self.title)
