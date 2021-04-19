@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 from collections import deque
-from typing import Callable, Optional, Any, Deque, cast
+from typing import Callable, Optional, Any, Deque, cast, List
 from xml import sax
 
 from wpydumps.model import Page, Revision, Contributor
@@ -32,7 +32,8 @@ class PageHandler(sax.handler.ContentHandler):
         self._current_page: Optional[Page] = None
         self._current_revision: Optional[Revision] = None
         self._current_contributor: Optional[Contributor] = None
-        self._current_content: Optional[str] = None
+        self._current_content_fragments: List[str] = []
+        self._in_element = False
 
         self._previous_revision_text_length: Optional[int] = None
 
@@ -47,8 +48,12 @@ class PageHandler(sax.handler.ContentHandler):
         if len(self._elements) >= 2:
             return self._elements[-2]
 
+    def currentContent(self):
+        return "".join(self._current_content_fragments)
+
     def startElement(self, name, attrs):
         self._elements.append(name)
+        self._in_element = True
 
         if name == "page":
             self._current_page = Page()
@@ -80,19 +85,21 @@ class PageHandler(sax.handler.ContentHandler):
                 return
 
     def characters(self, content: str):
-        if self._current_content is None:
-            self._current_content = content
-        else:
-            self._current_content += content
+        if not self._in_element:
+            # avoid most inter-element spaces
+            return
+
+        self._current_content_fragments.append(content)
 
     def endElement(self, name):
         parent = self.parentElement()
         element = self.currentElement()
         revision = self._current_revision
         self._elements.pop()
+        self._in_element = False
 
-        content = self._current_content
-        self._current_content = None
+        content = self.currentContent()
+        self._current_content_fragments = []
 
         if name == "page":
             self.page_callback(self._current_page)
@@ -143,8 +150,6 @@ class PageHandler(sax.handler.ContentHandler):
                 if self._keep_revisions_text:
                     revision.text = original_content
                     revision.text_length = len(original_content)
-                else:
-                    revision.text_length = 0
 
             elif element == "timestamp":
                 revision.timestamp = content
