@@ -60,8 +60,7 @@ class Wp7zReader(io.RawIOBase):
     def _open_blocks(self):
         with libarchive.public.file_reader(self.filename) as entries:
             for entry in entries:
-                for block in entry.get_blocks():
-                    yield block
+                yield from entry.get_blocks()
                 break
 
     def __enter__(self):
