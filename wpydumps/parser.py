@@ -33,7 +33,6 @@ class PageHandler(sax.handler.ContentHandler):
         self._current_revision: Optional[Revision] = None
         self._current_contributor: Optional[Contributor] = None
         self._current_content_fragments: List[str] = []
-        self._in_element = False
 
         self._previous_revision_text_length: Optional[int] = None
 
@@ -53,7 +52,7 @@ class PageHandler(sax.handler.ContentHandler):
 
     def startElement(self, name, attrs):
         self._elements.append(name)
-        self._in_element = True
+        self._current_content_fragments = []
 
         if name == "page":
             self._current_page = Page()
@@ -65,7 +64,7 @@ class PageHandler(sax.handler.ContentHandler):
             if name == "redirect":
                 self._current_page.redirect = attrs["title"]
                 return
-            elif name == "revision":
+            if name == "revision":
                 self._current_revision = Revision()
                 return
 
@@ -73,22 +72,20 @@ class PageHandler(sax.handler.ContentHandler):
             if name == "minor":
                 self._current_revision.minor = True
                 return
-            elif name == "contributor":
+
+            if name == "contributor":
                 if "deleted" in attrs:
                     self._current_revision.deleted_contributor = True
                     return
-                else:
-                    self._current_contributor = Contributor()
-                    return
-            elif name == "text" and "deleted" in attrs:
+
+                self._current_contributor = Contributor()
+                return
+
+            if name == "text" and "deleted" in attrs:
                 self._current_revision.deleted_text = True
                 return
 
     def characters(self, content: str):
-        if not self._in_element:
-            # avoid most inter-element spaces
-            return
-
         self._current_content_fragments.append(content)
 
     def endElement(self, name):
@@ -96,7 +93,6 @@ class PageHandler(sax.handler.ContentHandler):
         element = self.currentElement()
         revision = self._current_revision
         self._elements.pop()
-        self._in_element = False
 
         content = self.currentContent()
         self._current_content_fragments = []
@@ -125,7 +121,7 @@ class PageHandler(sax.handler.ContentHandler):
 
         # text fields
 
-        if content is None:
+        if not content:
             return
 
         original_content = content
