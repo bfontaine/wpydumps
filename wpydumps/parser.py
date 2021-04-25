@@ -110,6 +110,10 @@ class PageHandler(sax.handler.ContentHandler):
             revision.diff_length = revision.text_length - self._previous_revision_text_length
             self._previous_revision_text_length = revision.text_length
 
+            # TODO find some way to stream this instead of using a list: there are some (rare) cases
+            #  of huge pages with tons of revisions. Because each revision contains the full text,
+            #  it takes a lot of RAM. For example, one page on WP:fr has a 400M-lines-long XML <page>
+            #  (~60GB).
             self._current_page.revisions.append(revision)
             self._current_revision = None
             return
