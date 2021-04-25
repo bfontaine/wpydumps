@@ -1,3 +1,5 @@
 *.7z
+*.xml
 /run.py
 /dumps
+/page-tags

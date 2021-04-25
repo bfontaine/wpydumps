@@ -1,6 +1,6 @@
 # WPyDumps Changelog
 
-## 0.2.0 (unreleased)
+## 0.2.0 (2021/04/25)
 
 * Set `keep_revisions_text` to `True` by default
 * Fix parsing of fragmented text: in some cases the parser could return only a part of an attribute’s text.
