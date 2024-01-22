@@ -1,5 +1,3 @@
-# -*- coding: UTF-8 -*-
-
 import io
 from typing import Iterable
 

@@ -1,7 +1,5 @@
-# -*- coding: UTF-8 -*-
-
 from collections import deque
-from typing import Callable, Optional, Any, Deque, cast, List
+from typing import Callable, Optional, Any, Deque, List
 from xml import sax
 
 from wpydumps.model import Page, Revision, Contributor
@@ -10,6 +8,7 @@ from wpydumps.archive import get_reader
 PageCallbackType = Callable[[Page], Any]
 
 
+# noinspection PyPep8Naming
 class PageHandler(sax.handler.ContentHandler):
     """
     SAX handler to parse page revisions from a Wikipedia dump.
@@ -61,6 +60,8 @@ class PageHandler(sax.handler.ContentHandler):
 
         parent = self.parentElement()
         if parent == "page":
+            assert self._current_page is not None
+
             if name == "redirect":
                 self._current_page.redirect = attrs["title"]
                 return
@@ -69,6 +70,8 @@ class PageHandler(sax.handler.ContentHandler):
                 return
 
         if parent == "revision":
+            assert self._current_revision is not None
+
             if name == "minor":
                 self._current_revision.minor = True
                 return
@@ -98,15 +101,21 @@ class PageHandler(sax.handler.ContentHandler):
         self._current_content_fragments = []
 
         if name == "page":
+            assert self._current_page is not None
+
             self.page_callback(self._current_page)
             self._current_page = None
             return
 
         if name == "revision":
             revision = self._current_revision
+            assert revision is not None
+            assert self._current_page is not None
+
             if revision.text_length is None:
                 revision.text_length = 0
 
+            assert self._previous_revision_text_length is not None
             revision.diff_length = revision.text_length - self._previous_revision_text_length
             self._previous_revision_text_length = revision.text_length
 
@@ -119,6 +128,8 @@ class PageHandler(sax.handler.ContentHandler):
             return
 
         if name == "contributor":
+            assert self._current_revision is not None
+
             self._current_revision.contributor = self._current_contributor
             self._current_contributor = None
             return
@@ -132,7 +143,8 @@ class PageHandler(sax.handler.ContentHandler):
         content = content.strip()
 
         if parent == "page":
-            page = cast(Page, self._current_page)
+            page = self._current_page
+            assert page is not None
 
             if element == "ns":
                 page.namespace = content
@@ -146,6 +158,8 @@ class PageHandler(sax.handler.ContentHandler):
             return
 
         if parent == "revision":
+            assert revision is not None
+
             if element == "text":
                 if self._keep_revisions_text:
                     revision.text = original_content
@@ -169,7 +183,8 @@ class PageHandler(sax.handler.ContentHandler):
             return
 
         if parent == "contributor":
-            contributor = cast(Contributor, self._current_contributor)
+            contributor = self._current_contributor
+            assert contributor is not None
 
             if element == "id":
                 contributor.id = content

@@ -36,7 +36,7 @@ jobs:
 
     - name: Lint with Mypy
       run: |
-        poetry run mypy --ignore-missing-imports --warn-return-any wpydumps
+        poetry run mypy --check-untyped-defs wpydumps
 
     - name: Unit tests
       run: |

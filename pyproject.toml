@@ -23,3 +23,10 @@ mypy = "^1.8.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[[tool.mypy.overrides]]
+module = [
+  "libarchive",
+  "libarchive.public",
+]
+ignore_missing_imports = true
