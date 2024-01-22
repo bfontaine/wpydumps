@@ -23,8 +23,7 @@ The parser uses [SAX][] to read the files as a stream. It takes a reader or a fi
 parses the file and call that function with each page.
 
 Pages are represented as `wpydumps.model.Page` objects. They include the pages’ details as well as their
-revisions (`wpydumps.model.Revision`). Each revision holds a reference to its contributor (`wpydumps.model.Contributor`)
-.
+revisions (`wpydumps.model.Revision`). Each revision holds a reference to its contributor (`wpydumps.model.Contributor`).
 
 ```python3
 import wpydumps as p
