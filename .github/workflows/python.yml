@@ -28,7 +28,11 @@ jobs:
         cache: 'poetry'
 
     - name: Install libarchive
-      run: sudo apt-get install libarchive-dev
+      run: |
+        sudo apt-get install libarchive-dev
+        # https://stackoverflow.com/a/68910024/735926
+        cd /usr/lib/x86_64-linux-gnu/
+        ln -s -f libarchive.a liblibarchive.a
 
     - name: Install dependencies
       run: |
