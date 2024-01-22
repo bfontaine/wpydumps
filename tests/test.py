@@ -11,7 +11,7 @@ import wpydumps
 
 class TestWPyDumps(unittest.TestCase):
     def test_version(self):
-        self.assertRegexpMatches(wpydumps.__version__, r"^\d+\.\d+\.\d+")
+        self.assertRegex(wpydumps.__version__, r"^\d+\.\d+\.\d+")
 
 
 if __name__ == "__main__":
