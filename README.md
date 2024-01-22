@@ -15,6 +15,8 @@ It works with (at least) these dumps:
 
     pip install wpydumps
 
+If you have issues with `libarchive`, see [its documentation](https://github.com/dsoprea/PyEasyArchive?tab=readme-ov-file#notes).
+
 ## Usage
 
 The parser uses [SAX][] to read the files as a stream. It takes a reader or a filename and a page callback function. It
